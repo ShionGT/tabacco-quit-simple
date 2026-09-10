@@ -62,7 +62,7 @@ python app.py
 http://127.0.0.1:5000
 ```
 
-これだけで使えます。データは `golden_marlboro.db`（SQLite）に自動保存されます。
+これだけで使えます。データは `tabacco.db`（SQLite）に自動保存されます。
 
 ---
 
@@ -82,9 +82,9 @@ tabacco-quit-simple/
 
 ## 💾 データについて
 
-- 記録は SQLite データベース `golden_marlboro.db` に保存されます
+- 記録は SQLite データベース `tabacco.db` に保存されます
 - データベースファイルは `.gitignore` に含まれているため、Git にはアップロードされません
-- データをリセットしたい場合は `golden_marlboro.db` を削除してアプリを再起動してください
+- データをリセットしたい場合は `tabacco.db` を削除してアプリを再起動してください
 
 ---
 

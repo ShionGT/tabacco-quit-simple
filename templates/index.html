@@ -1,207 +1,292 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>喫煙カウンター 🚬</title>
-<style>
-  :root {
-    --bg: #0a0a0a;
-    --card: #141414;
-    --accent: #d4a857;
-    --text: #f5f5f5;
-    --muted: #888;
-    --border: #2a2a2a;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-  .container { max-width: 520px; margin: 0 auto; padding: 2rem 1.2rem; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合同プロジェクト・喫煙カウンター</title>
+  <style>
+    :root {
+      --bg: #fbfade;
+      --card: #141414;
+      --accent: #f3b746;
+      --text: #3c3c3c;
+      --muted: #888;
+      --border: #2a2a2a;
+    }
 
-  header { text-align: center; margin-bottom: 2.5rem; }
-  header h1 { font-size: 1.6rem; letter-spacing: 0.04em; }
-  header p { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* ボタン */
-  .smoke-btn {
-    width: 100%;
-    padding: 1.4rem;
-    font-size: 1.15rem;
-    font-weight: bold;
-    color: #1a1a1a;
-    background: var(--accent);
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.12s, box-shadow 0.12s;
-    margin-bottom: 0.8rem;
-  }
-  .smoke-btn:hover { box-shadow: 0 0 24px rgba(212,168,87,0.4); }
-  .smoke-btn:active { transform: scale(0.97); }
+    body {
+      font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
 
-  .undo-btn {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 0.85rem;
-    color: var(--muted);
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  .undo-btn:hover { border-color: var(--accent); color: var(--text); }
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 1rem 1.2rem;
+    }
 
-  /* 今日の本数 */
-  .today-badge {
-    text-align: center;
-    margin: 1.5rem 0;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  .today-badge span {
-    display: block;
-    font-size: 2.6rem;
-    font-weight: bold;
-    color: var(--accent);
-  }
+    header {
+      text-align: center;
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+    }
 
-  /* 区切り */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 2.5rem 0 1.5rem;
-    text-align: center;
-  }
-  .divider span {
-    position: relative;
-    top: -0.7rem;
-    background: var(--bg);
-    padding: 0 1rem;
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-  }
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+    }
 
-  /* 統計 */
-  .stats { display: grid; gap: 0.8rem; }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.1rem 1.2rem;
-  }
-  .stat-card .label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 0.3rem;
-    letter-spacing: 0.05em;
-  }
-  .stat-card .value { font-size: 1.3rem; font-weight: bold; }
-  .stat-card .value .unit { font-size: 0.85rem; font-weight: normal; color: var(--muted); margin-left: 0.2rem; }
-  .stat-card .sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    header p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
 
-  /* 日別 */
-  .history { margin-top: 1.5rem; }
-  .history h2 { font-size: 1rem; margin-bottom: 0.7rem; }
-  .day-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.55rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
-  }
-  .day-row .date { color: var(--muted); }
-  .day-row .count { font-weight: bold; }
-  .day-row .count .bar {
-    display: inline-block;
-    height: 8px;
-    margin-left: 0.5rem;
-    background: var(--accent);
-    border-radius: 4px;
-    vertical-align: middle;
-  }
-  .empty { text-align: center; color: var(--muted); padding: 3rem 0; font-size: 0.9rem; }
+    /* ボタン */
+    .smoke-btn {
+      width: 100%;
+      padding: 1.4rem;
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      background: var(--accent);
+      border: solid 2px black;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      margin-bottom: 0.8rem;
+    }
 
-  footer { text-align: center; margin-top: 3rem; font-size: 0.75rem; color: #444; }
-</style>
+    .smoke-btn:hover {
+      box-shadow: 0 0 24px rgba(243, 183, 70, 0.4);
+    }
+
+    .smoke-btn:active {
+      transform: scale(0.97);
+    }
+
+    .undo-btn {
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .undo-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* 今日の本数 */
+    .today-badge {
+      text-align: center;
+      margin: 1.5rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .today-badge span {
+      display: block;
+      font-size: 2.6rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    /* 区切り */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 2.5rem 0 1.5rem;
+      text-align: center;
+    }
+
+    .divider span {
+      position: relative;
+      top: -0.7rem;
+      background: var(--bg);
+      padding: 0 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* 統計 */
+    .stats {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1.1rem 1.2rem;
+    }
+
+    .stat-card .label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .value {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .stat-card .value .unit {
+      font-size: 0.85rem;
+      font-weight: normal;
+      color: var(--muted);
+      margin-left: 0.2rem;
+    }
+
+    .stat-card .sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* 日別 */
+    .history {
+      margin-top: 1.5rem;
+    }
+
+    .history h2 {
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .day-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .day-row .date {
+      color: var(--muted);
+    }
+
+    .day-row .count {
+      font-weight: bold;
+    }
+
+    .day-row .count .bar {
+      display: inline-block;
+      height: 8px;
+      margin-left: 0.5rem;
+      background: var(--accent);
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.75rem;
+      color: #444;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
+  <div class="container">
 
-  <header>
-    <h1>🚬 喫煙カウンター</h1>
-    <p>Golden Marlboro · 620円 / 20本</p>
-  </header>
+    <header>
+      <h1>喫煙カウンター</h1>
+      <p>金マル · 620円 / 20本</p>
+    </header>
 
-  <!-- 記録ボタン -->
-  <form method="post" action="{{ url_for('index') }}">
-    <button class="smoke-btn" type="submit">喫煙した</button>
-  </form>
-  <form method="post" action="{{ url_for('delete_last') }}">
-    <button class="undo-btn" type="submit">↩ 最新の記録を取り消す</button>
-  </form>
+    <!-- 記録ボタン -->
+    <form method="post" action="{{ url_for('index') }}">
+      <button class="smoke-btn" type="submit">喫煙した</button>
+    </form>
+    <form method="post" action="{{ url_for('delete_last') }}">
+      <button class="undo-btn" type="submit">↩ 最新の記録を取り消す</button>
+    </form>
 
-  <!-- 今日 -->
-  <div class="today-badge">
-    本日の喫煙本数
-    <span>{{ today_count }}</span>
-  </div>
-
-  <div class="divider"><span>↓ スクロールで統計</span></div>
-
-  <!-- 統計 -->
-  <div class="stats">
-    <div class="stat-card">
-      <div class="label">総喫煙本数</div>
-      <div class="value">{{ total }}<span class="unit">本</span></div>
+    <!-- 今日 -->
+    <div class="today-badge">
+      本日の喫煙本数
+      <span>{{ today_count }}</span>
     </div>
 
-    <div class="stat-card">
-      <div class="label">推定消費箱数</div>
-      <div class="value">{{ packs_full }}<span class="unit">箱</span> + {{ packs_remain }}<span class="unit">本</span></div>
-      <div class="sub">（正確: {{ packs_exact }} 箱 · {{ cost|number_format }}円分）</div>
-    </div>
+    <div class="divider"><span>↓↓↓↓ スクロールで統計 ↓↓↓↓</span></div>
 
-    <div class="stat-card">
-      <div class="label">1日あたりの平均本数</div>
-      <div class="value">{{ avg_per_day }}<span class="unit">本 / 日</span></div>
-    </div>
+    <!-- 統計 -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">総喫煙本数</div>
+        <div class="value">{{ total }}<span class="unit">本</span></div>
+      </div>
 
-    <div class="stat-card">
-      <div class="label">平均喫煙間隔</div>
-      <div class="value">{{ avg_interval }}<span class="unit">分</span></div>
-      <div class="sub">（1本吸ってから次までの平均時間）</div>
-    </div>
-  </div>
-
-  <!-- 日別履歴 -->
-  <div class="history">
-    <h2>日別記録</h2>
-    {% if daily %}
-      {% for d in daily %}
-        <div class="day-row">
-          <span class="date">{{ d.d }}</span>
-          <span class="count">
-            {{ d.c }}本
-            <span class="bar" style="width: {{ [d.c * 4, 60] | min }}px"></span>
-          </span>
+      <div class="stat-card">
+        <div class="label">推定消費箱数</div>
+        <div class="value">{{ packs_full }}<span class="unit">箱</span> + {{ packs_remain }}<span class="unit">本</span>
         </div>
+        <div class="sub">（正確: {{ packs_exact }} 箱 · {{ cost|number_format }}円分）</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="label">1日あたりの平均本数</div>
+        <div class="value">{{ avg_per_day }}<span class="unit">本 / 日</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="label">平均喫煙間隔</div>
+        <div class="value">{{ avg_interval }}<span class="unit">分</span></div>
+        <div class="sub">（1本吸ってから次までの平均時間）</div>
+      </div>
+    </div>
+
+    <!-- 日別履歴 -->
+    <div class="history">
+      <h2>日別記録</h2>
+      {% if daily %}
+      {% for d in daily %}
+      <div class="day-row">
+        <span class="date">{{ d.d }}</span>
+        <span class="count">
+          {{ d.c }}本
+          <span class="bar" style="width: {{ [d.c * 4, 60] | min }}px"></span>
+        </span>
+      </div>
       {% endfor %}
-    {% else %}
+      {% else %}
       <div class="empty">まだ記録がありません。<br>上のボタンで喫煙を記録できます。</div>
-    {% endif %}
+      {% endif %}
+    </div>
+
+    <footer>
+      &copy; 2026 PI-51A-215 03 篠崎太希
+    </footer>
+
   </div>
-
-  <footer>
-    Tobacco Quit Simple · Golden Marlboro (¥620 / 20本)
-  </footer>
-
-</div>
 </body>
+
 </html>
